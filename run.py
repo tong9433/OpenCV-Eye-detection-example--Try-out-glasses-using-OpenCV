@@ -36,9 +36,9 @@ if len(centers) > 0:
 
     print("[left] x:", centers[0][0], "y:", centers[0][1], "[right] x:", centers[1][0], "y:", centers[1][1]);
     
-    glassesCalvalue = 2.15
+    glassesCalvalue = 2.16
 
-    # change the given value of 2.15 according to the size of the detected face
+    # change the given value of 2.16 according to the size of the detected face
     glasses_width = glassesCalvalue * abs(centers[1][0] - centers[0][0]) # Distance between left and right
     overlay_img = np.ones(image.shape, np.uint8) * 255
     h, w = glass_img.shape[:2]
