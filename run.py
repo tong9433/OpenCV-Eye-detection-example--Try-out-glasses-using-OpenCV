@@ -1,12 +1,19 @@
 import cv2
 import numpy as np
 
-face_cascade = cv2.CascadeClassifier('/home/shahsparx/opencv-master/data/haarcascades/haarcascade_frontalface_alt.xml')
-eye_cascade = cv2.CascadeClassifier('/home/shahsparx/opencv-master/data/haarcascades/haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier('./classifier/haarcascades/haarcascade_frontalface_alt.xml')
+eye_cascade = cv2.CascadeClassifier('./classifier/haarcascades/haarcascade_eye.xml')
+
 
 # read both the images of the face and the glasses
-image = cv2.imread('sample.jpg')
-glass_img = cv2.imread('glass_image.jpg')
+imageName = 'tongil'
+imageType = '.jpg'
+
+glassesImageName = 'glasses_4'
+glassesImageType = '.jpg'
+
+image = cv2.imread('./faceData/' + imageName + imageType)
+glass_img = cv2.imread('./glassesData/' + glassesImageName + glassesImageType)
 
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -24,6 +31,7 @@ for (x, y, w, h) in faces:
     # Store the coordinates of eyes in the image to the 'center' array
     for (ex, ey, ew, eh) in eyes:
         centers.append((x + int(ex + 0.5 * ew), y + int(ey + 0.5 * eh)))
+
 
 if len(centers) > 0:
     # change the given value of 2.15 according to the size of the detected face
@@ -54,6 +62,11 @@ if len(centers) > 0:
     final_img = cv2.add(temp, temp2)
 
     # imS = cv2.resize(final_img, (1366, 768))
-    cv2.imshow('Lets wear Glasses', final_img)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+    # cv2.imshow('Lets wear Glasses', final_img)
+    cv2.imwrite('./faceChangeData/'+imageName + '_' + imageType, final_img)
+    print("[Suceess] Making image taking on Glasses! located in " + './faceChangeData/'+imageName + '_' + imageType)
+    #cv2.waitKey()
+else:
+    print("[Fail] Eye Detecting Fail!!")
+
+cv2.destroyAllWindows()
