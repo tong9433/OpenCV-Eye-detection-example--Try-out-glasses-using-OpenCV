@@ -32,10 +32,14 @@ for (x, y, w, h) in faces:
     for (ex, ey, ew, eh) in eyes:
         centers.append((x + int(ex + 0.5 * ew), y + int(ey + 0.5 * eh)))
 
-
 if len(centers) > 0:
+
+    print("[left] x:", centers[0][0], "y:", centers[0][1], "[right] x:", centers[1][0], "y:", centers[1][1]);
+    
+    glassesCalvalue = 2.15
+
     # change the given value of 2.15 according to the size of the detected face
-    glasses_width = 2.16 * abs(centers[1][0] - centers[0][0])
+    glasses_width = glassesCalvalue * abs(centers[1][0] - centers[0][0]) # Distance between left and right
     overlay_img = np.ones(image.shape, np.uint8) * 255
     h, w = glass_img.shape[:2]
     scaling_factor = glasses_width / w
@@ -52,6 +56,9 @@ if len(centers) > 0:
     h, w = overlay_glasses.shape[:2]
     overlay_img[int(y):int(y + h), int(x):int(x + w)] = overlay_glasses
 
+    print("[glasses] x:", x,"y:", y, "width:", w, "height:", h)
+
+
     # Create a mask and generate it's inverse.
     gray_glasses = cv2.cvtColor(overlay_img, cv2.COLOR_BGR2GRAY)
     ret, mask = cv2.threshold(gray_glasses, 110, 255, cv2.THRESH_BINARY)
@@ -64,7 +71,7 @@ if len(centers) > 0:
     # imS = cv2.resize(final_img, (1366, 768))
     # cv2.imshow('Lets wear Glasses', final_img)
     cv2.imwrite('./faceChangeData/'+imageName + '_' + imageType, final_img)
-    print("[Suceess] Making image taking on Glasses! located in " + './faceChangeData/'+imageName + '_' + imageType)
+    print("[Suceess] Making image taking on glasses! located in " + './faceChangeData/'+imageName + '_' + imageType)
     #cv2.waitKey()
 else:
     print("[Fail] Eye Detecting Fail!!")
